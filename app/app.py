@@ -5,9 +5,10 @@ from pymongo import MongoClient
 
 app = Flask("DockerTutorial")
 
-# To change accordingly ggdfd
-# print(os.environ)
-client = MongoClient(os.environ["DB_PORT_27017_TCP_ADDR"], 27017)
+mongodb_host = os.environ.get('MONGO_HOST', 'mongo')
+mongodb_port = int(os.environ.get('MONGO_PORT', '27017'))
+
+client = MongoClient(mongodb_host, mongodb_port)
 db = client.appdb
 
 @app.route("/")
