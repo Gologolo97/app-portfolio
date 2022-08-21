@@ -13,8 +13,8 @@ pipeline{
         stage("build"){
             steps{
                 script{
-                sh "docker compose up --build "
-                sh "docker compose down "
+                sh "docker-compose up --build "
+                sh "docker-compose down "
                 }
             }
             post{
