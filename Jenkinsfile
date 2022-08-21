@@ -12,7 +12,10 @@ pipeline{
     stages{
         stage("build"){
             steps{
-                echo "========test========"
+                script{
+                sh "docker compose up --build "
+                sh "docker compose down "
+                }
             }
             post{
                 always{
