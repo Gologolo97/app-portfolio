@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    build: .
+    image: app:latest
     #command: python -u app.py
     #command: tail -F anything
     ports:

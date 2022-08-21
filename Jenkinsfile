@@ -13,7 +13,7 @@ pipeline{
         stage("build"){
             steps{
                 script{
-                sh "docker build -t app ."
+                sh "docker build -t app:latest ."
                 sh "docker-compose up"
                 sh "docker-compose down "
                 }
