@@ -8,15 +8,15 @@ services:
       - "5000:5000"
     volumes:
       - .:/app
-    links:
-      - mongo
+   # links:
+   #   - mongo
   
-  mongo:
-    image: mongo:3.6.1
-    volumes:
-      - db:/data/db
+ # mongo:
+ #   image: mongo:3.6.1
+  #  volumes:
+   #   - db:/data/db
   
   
 
-volumes:
-  db:
+#volumes:
+  #db:
