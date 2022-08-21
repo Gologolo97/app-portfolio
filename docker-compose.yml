@@ -7,7 +7,7 @@ services:
       - db:/data/db
   web:
     build: .
-    command: python -u app.py
+    #command: python -u app.py
     ports:
       - "5000:5000"
     volumes:
