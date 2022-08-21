@@ -11,6 +11,8 @@ services:
       - mongo
   mongo:
     image: mongo:3.6.1
+    ports:
+      - "27017:27017"
     volumes:
       - db:/data/db
 
