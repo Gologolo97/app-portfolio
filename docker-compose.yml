@@ -1,5 +1,10 @@
 version: '3'
 services:
+
+  mongo:
+    image: mongo:3.6.1
+    volumes:
+      - db:/data/db
   web:
     build: .
     command: python3 -u app.py
@@ -9,12 +14,7 @@ services:
       - .:/app
     links:
       - mongo
-  mongo:
-    image: mongo:3.6.1
-    ports:
-      - "27017:27017"
-    volumes:
-      - db:/data/db
+  
 
 volumes:
   db:
