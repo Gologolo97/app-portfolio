@@ -54,7 +54,8 @@ pipeline{
             }
             steps{
                 script{
-                    "docker build -t app:SNAPSHOT ."
+                    sh "docker build -t app:SNAPSHOT ."
+                    NEXT_TAG=""
                 }
             }
         }
