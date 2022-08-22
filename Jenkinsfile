@@ -14,26 +14,30 @@ pipeline{
             steps{
                 script{
                 sh "docker build -t app:latest ."
-                sh "docker-compose up -d"
-                sh "docker-compose down "
+                
                 }
             }
-            post{
-                always{
-                    echo "========always========"
+        }
+
+        stage("e2e"){
+            steps{
+                script{
+                sh "docker-compose up -d"
                 }
-                success{
-                    echo "========A executed successfully========"
-                }
-                failure{
-                    echo "========A execution failed========"
+            }
+        }
+
+        stage("push"){
+            steps{
+                script{
+
                 }
             }
         }
     }
     post{
         always{
-            echo "========always========"
+            sh "docker-compose down "
         }
         success{
             echo "========pipeline executed successfully ========"
