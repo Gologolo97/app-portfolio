@@ -21,6 +21,9 @@ pipeline{
                 }
             steps{
                 script{
+                withCredentials([string(credentialsId: 'GITHUB_HOST_KEY', variable: 'GITHUB_HOST_KEY')]) {
+                    sh 'mkdir ~/.ssh && echo "$GITHUB_HOST_KEY" >> ~/.ssh/known_hosts'
+                }
                 sshagent(['githun-private-key']){
                     git branch -r
                 }
