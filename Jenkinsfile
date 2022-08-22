@@ -21,6 +21,7 @@ pipeline{
                 }
             steps{
                 script{
+                sshagent(credentials: ['githun-private-key']){
                // sh "git fetch --all --tags"
                 TAG = BRANCH_NAME.split('\\/')
                 VERSION = TAG[1]
@@ -42,6 +43,7 @@ pipeline{
                 sh "docker build -t app:${NEXT_TAG} ."
                 
                 }
+              }  
             }
         }
 
