@@ -17,13 +17,30 @@ pipeline{
     stages{
         stage("build"){
             when {
-                    expression {BRANCH_NAME ==~ /master(.*)/ }
+                    expression {BRANCH_NAME ==~ /release(.+)/ }
                 }
             steps{
                 script{
                 
                 sshagent(['githun-private-key']){
                     sh "git fetch --all --tags"
+                    TAG = BRANCH_NAME.split('\\/')
+                        VERSION = TAG[1]
+                        LAST_DIGIT_CHECK = sh (script: "git tag -l | tail -n 1 | tail -c 2", returnStdout: true)
+                        LAST_DIGIT = sh (script: "git tag -l | tail -n 1", returnStdout: true)
+                        echo "Last digit: ${LAST_DIGIT}"
+                        echo "Tag: ${TAG}"
+                        if (LAST_DIGIT_CHECK.isEmpty()) {
+                            NEXT_TAG = "${VERSION}.0"
+                            echo "tag is ${NEXT_TAG}"
+                        }
+                        else {
+                            (major, minor, patch) = LAST_DIGIT.tokenize(".")
+                            patch = patch.toInteger() + 1
+                            echo "Increment to ${patch}"
+                            NEXT_TAG = "${major}.${minor}.${patch}"
+                            echo "the next tag for Release is: ${NEXT_TAG}"
+                        }
                 }
 
                
