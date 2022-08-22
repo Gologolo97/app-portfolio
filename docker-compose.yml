@@ -17,6 +17,8 @@ services:
     image: mongo:3.6.1
     volumes:
       - db:/data/db
+    networks: 
+      - portfolio
   
   
 
