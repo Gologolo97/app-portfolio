@@ -53,7 +53,7 @@ pipeline{
         stage("e2e"){
             steps{
                 script{
-                sh "IMAGE=app:${NEXT_TAG} docker-compose up -d"
+                sh "IMAGE=app:${NEXT_TAG} docker compose docker-compose up -d"
                 }
             }
         }
