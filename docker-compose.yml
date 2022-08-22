@@ -4,8 +4,6 @@ services:
     image: app:latest
     #command: python -u app.py
     #command: tail -F anything
-    networks: 
-      - portfolio
     ports:
       - "5000:5000"
     #volumes:
@@ -25,4 +23,6 @@ services:
 volumes:
   db:
 networks:
-  portfolio:
+  default:
+    external:
+      name: portfolio
