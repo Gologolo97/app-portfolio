@@ -30,7 +30,7 @@ pipeline{
         stage("push"){
             steps{
                 script{
-
+                sh" echo ta mere"
                 }
             }
         }
