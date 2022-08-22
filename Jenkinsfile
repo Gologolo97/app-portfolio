@@ -54,6 +54,7 @@ pipeline{
             steps{
                 script{
                 sh "IMAGE=app:${NEXT_TAG} docker-compose up -d"
+                sh ""
                 }
             }
         }
