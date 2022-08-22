@@ -76,12 +76,29 @@ pipeline{
         }
 
         stage("push"){
+            when{
+                expression {BRANCH_NAME ==~ /release(.+)/  }
+            }
             steps{
                 script{
                 sh" echo ta mere"
                 }
             }
         }
+
+        stage ("release TAG"){
+            when {
+                    expression {BRANCH_NAME ==~ /release(.+)/ }
+                }
+            steps{
+                sshagent(['githun-private-key']){
+                    sh "git clean -f"
+                    sh "git tag ${NEXT_TAG}"
+                    sh "git push origin ${NEXT_TAG}"
+                }
+            }
+        }
+
     }
     post{
         always{
