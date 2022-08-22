@@ -23,11 +23,11 @@ pipeline{
                 script{
                 
                 sshagent(['githun-private-key']){
-                    sh "git branch -r"
+                    sh "git fetch --all --tags"
                 }
 
                
-                sh "docker build -t app:${NEXT_TAG} ."
+                //sh "docker build -t app:${NEXT_TAG} ."
                 
                 
               }  
