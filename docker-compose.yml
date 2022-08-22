@@ -6,8 +6,8 @@ services:
     #command: tail -F anything
     ports:
       - "5000:5000"
-    volumes:
-      - .:/app
+#    volumes:
+#      - .:/app
     links:
       - mongo
   
