@@ -8,11 +8,20 @@ pipeline{
         daysToKeepStr: '7',
         artifactNumToKeepStr: '30'))   
     }
+    environment{
+        
+        BRANCH_NAME = "${env.GIT_BRANCH}"
+        
+    }
 
     stages{
         stage("build"){
+            when {
+                    expression {BRANCH_NAME ==~ /master(.*)/ }
+                }
             steps{
                 script{
+                sh "git fetch --all --tags"
                 sh "docker build -t app:latest ."
                 
                 }
