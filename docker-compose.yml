@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    image: app:${VERSION}
+    image: golo-portfolio:${VERSION}
     #command: python -u app.py
     #command: tail -F anything
     ports:

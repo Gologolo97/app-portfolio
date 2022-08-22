@@ -42,7 +42,8 @@ pipeline{
                             echo "the next tag for Release is: ${NEXT_TAG}"
                         }
                 }
-                sh "docker build -t app:${NEXT_TAG} ."  
+                //sh "docker build -t app:${NEXT_TAG} ."  
+                image = docker.build("golo-portfolio:${NEXT_TAG}")
               }  
             }
         }
@@ -54,7 +55,8 @@ pipeline{
             }
             steps{
                 script{
-                    sh "docker build -t app:SNAPSHOT ."
+                    //sh "docker build -t app:SNAPSHOT ."
+                    image = docker.build("golo-portfolio:SNAPSHOT")
                     NEXT_TAG=""
                 }
             }
@@ -81,7 +83,8 @@ pipeline{
             }
             steps{
                 script{
-                sh" echo ta mere"
+                docker.withRegistry("https://644435390668.dkr.ecr.us-east-2.amazonaws.com","ecr:us-east-2:aws-credentials"){
+                    image.push("${NEXT_TAG}")}
                 }
             }
         }
@@ -105,10 +108,15 @@ pipeline{
             sh "docker-compose down "
         }
         success{
-            echo "========pipeline executed successfully ========"
+            mail to: "golovatylejb@gmail.com",
+            subject: "Notification from Jenkins",
+            body: "Everything worked"
         }
+
         failure{
-            echo "========pipeline execution failed========"
+            mail to: "golovatylejb@gmail.com",
+            subject: "Notification from Jenkins",
+            body: "Test failed"
         }
     }
 }
