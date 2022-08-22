@@ -14,7 +14,7 @@ pipeline{
             steps{
                 script{
                 sh "docker build -t app:latest ."
-                sh "docker-compose up"
+                sh "docker-compose up -d"
                 sh "docker-compose down "
                 }
             }
