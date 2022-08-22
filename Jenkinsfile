@@ -21,7 +21,7 @@ pipeline{
                 }
             steps{
                 script{
-                sh "git fetch --all --tags"
+               // sh "git fetch --all --tags"
                 TAG = BRANCH_NAME.split('\\/')
                 VERSION = TAG[1]
                 LAST_DIGIT_CHECK = sh (script: "git tag -l | tail -n 1 | tail -c 2", returnStdout: true)
