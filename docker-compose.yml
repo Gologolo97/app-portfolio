@@ -8,8 +8,8 @@ services:
       - portfolio
     ports:
       - "5000:5000"
-    volumes:
-      - .:/app
+    #volumes:
+    # - .:/app
     links:
       - mongo
   
