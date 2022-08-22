@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    image: app:latest
+    image: app:${VERSION}
     #command: python -u app.py
     #command: tail -F anything
     ports:

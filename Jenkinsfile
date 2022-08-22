@@ -43,7 +43,7 @@ pipeline{
                         }
                 }
 
-                sh "docker build -t app:latest ."
+                sh "docker build -t app:${NEXT_TAG} ."
                 
                 
               }  
@@ -53,8 +53,9 @@ pipeline{
         stage("e2e"){
             steps{
                 script{
-                sh "docker-compose up -d"
-                sh ""
+                sh "VERSION=${NEXT_TAG} docker-compose up -d"
+                sh "chmod +x test.sh"
+                sh "./test.sh web:5000"
                 }
             }
         }
