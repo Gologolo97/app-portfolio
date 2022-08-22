@@ -84,7 +84,9 @@ pipeline{
             steps{
                 script{
                 docker.withRegistry("https://644435390668.dkr.ecr.us-east-2.amazonaws.com","ecr:us-east-2:aws-credentials"){
-                    image.push("${NEXT_TAG}")}
+                    app = docker.build("golo-portfolio")
+                    app.push("${NEXT_TAG}")}
+                    //image.push("${NEXT_TAG}")}
                 }
             }
         }
