@@ -15,7 +15,7 @@ pipeline{
     }
 
     stages{
-        stage("build"){
+        stage("build for release"){
             when {
                     expression {BRANCH_NAME ==~ /release(.+)/ }
                 }
@@ -42,18 +42,32 @@ pipeline{
                             echo "the next tag for Release is: ${NEXT_TAG}"
                         }
                 }
-
-                sh "docker build -t app:${NEXT_TAG} ."
-                
-                
+                sh "docker build -t app:${NEXT_TAG} ."  
               }  
+            }
+        }
+
+        stage("build not for release")
+        {
+            when{
+                expression {BRANCH_NAME == 'master' }
+            }
+            steps{
+                script{
+                    "docker build -t app:SNAPSHOT ."
+                }
             }
         }
 
         stage("e2e"){
             steps{
                 script{
+                if (NEXT_TAG.isEmpty()){
+                sh "VERSION=SNAPSHOT docker-compose up -d"
+                }
+                else{
                 sh "VERSION=${NEXT_TAG} docker-compose up -d"
+                }
                 sh "chmod +x test.sh"
                 sh "./test.sh web:5000"
                 }
