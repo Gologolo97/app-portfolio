@@ -15,14 +15,14 @@ services:
       - mongo
   
   mongo:
-    image: mongo:3.6.1
-    #image: mongo:6.0.1
+    #image: mongo:3.6.1
+    image: bitnami/mongodb:6.0.1-debian-11-r0
     volumes:
-      - db:/data/db
+      - db_mongo:/bitnami/mongodb
   
 
 volumes:
-  db:
+  db_mongo:
 networks:
   default:
     external:

@@ -16,7 +16,8 @@ db = mydb["notes"]
 
 @app.route("/")
 def index():
-    _items = db.appdb.find()
+   # _items = db.appdb.find()
+    _items = db.find()
     items = [items for items in _items]
 
     return render_template("index.html", items=items)
