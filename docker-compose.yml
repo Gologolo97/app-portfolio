@@ -2,6 +2,9 @@ version: '3'
 services:
   web:
     image: golo-portfolio:${VERSION}
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/
+    #build: . 
     #command: python -u app.py
     #command: tail -F anything
     ports:

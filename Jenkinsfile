@@ -51,7 +51,7 @@ pipeline{
         stage("build not for release")
         {
             when{
-                expression {BRANCH_NAME == 'master' }
+                expression {BRANCH_NAME == 'master' && BRANCH_NAME ==~ /feature(.+)/ }
             }
             steps{
                 script{

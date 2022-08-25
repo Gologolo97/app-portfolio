@@ -5,10 +5,10 @@ from pymongo import MongoClient
 
 app = Flask("DockerTutorial")
 
-mongodb_host = os.environ.get('MONGO_HOST', 'mongo')
-mongodb_port = int(os.environ.get('MONGO_PORT', '27017'))
-
-client = MongoClient(mongodb_host, mongodb_port)
+#mongodb_host = os.environ.get('MONGO_HOST', 'MONGODB_URI')
+#mongodb_port = int(os.environ.get('MONGO_PORT', '27017'))
+MONGODB_URI = os.environ['MONGODB_URI']
+client = MongoClient(MONGODB_URI)
 db = client.appdb
 
 @app.route("/")
