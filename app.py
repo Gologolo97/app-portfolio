@@ -9,7 +9,10 @@ app = Flask("DockerTutorial")
 #mongodb_port = int(os.environ.get('MONGO_PORT', '27017'))
 MONGODB_URI = os.environ['MONGODB_URI']
 client = MongoClient(MONGODB_URI)
-db = client.appdb
+#db = client.appdb
+mydb = client["mydatabase"]
+db = mydb["notes"]
+
 
 @app.route("/")
 def index():
@@ -25,7 +28,8 @@ def new():
         "helloworld": request.form["helloworld"]
     }
 
-    db.appdb.insert_one(data)
+    #db.appdb.insert_one(data)
+    db.insert_one(data)
 
     return redirect(url_for("index"))
 
