@@ -27,7 +27,7 @@ pipeline{
                     TAG = BRANCH_NAME.split('\\/')
                         VERSION = TAG[1]
                         LAST_DIGIT_CHECK = sh (script: "git tag -l | tail -n 1 | tail -c 2", returnStdout: true)
-                        LAST_DIGIT = sh (script: "git tag -l | tail -n 1", returnStdout: true)
+                        LAST_DIGIT = sh (script: "git describe --tags | cut -d "-" -f1", returnStdout: true)
                         echo "Last digit: ${LAST_DIGIT}"
                         echo "Tag: ${TAG}"
                         if (LAST_DIGIT_CHECK.isEmpty()) {
