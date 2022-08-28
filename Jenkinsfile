@@ -109,13 +109,13 @@ pipeline{
             steps{
                 script{
                     sshagent(['githun-private-key']){
-                    
+                        echo "${NEXT_TAG}"
                         
                         sh '''
                         #!/bin/bash
                         git commit -am"commit"
                         git checkout master
-                        
+
                         yq -i '.app.tag=strenv(NEXT_TAG)' flask-chart/values.yaml
                         git add .
                         git commit -am"Tag change"
