@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}--configmap
+  namespace: default
+data:
+  MONGODB_URI: mongodb://root:password@{{ .Release.Name }}-mongodb-0.{{ .Release.Name }}-mongodb-headless:27017/?authSource=admin&replicaSet=rs0
+  
+  
