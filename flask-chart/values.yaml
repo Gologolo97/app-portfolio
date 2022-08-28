@@ -68,7 +68,7 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 app:
-  tag: 
+  tag: ""
   scale: 3
   resources:
     requests:
