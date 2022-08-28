@@ -112,7 +112,13 @@ pipeline{
                     
                         
                         LAST_TAG= sh (script: "grep tag: flask-chart/values.yaml | cut -d ':' -f 2", returnStdout: true)
-                        sh (script: "sed -Ei 's/${LAST_TAG}/${NEXT_TAG}/' flask-chart/values.yaml")
+                        //sh (script: "sed -Ei "s/${LAST_TAG}/${NEXT_TAG}/" flask-chart/values.yaml")
+                        sh '''
+                        #!/bin/bash
+                        
+                        sed -i "s/$LAST_TAG/$NEXT_TAG/" flask-chart/values.yaml
+                        
+                        '''
                     }
                 }
             }
