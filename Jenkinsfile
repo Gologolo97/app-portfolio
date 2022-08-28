@@ -27,7 +27,7 @@ pipeline{
                     TAG = BRANCH_NAME.split('\\/')
                         VERSION = TAG[1]
                         LAST_DIGIT_CHECK = sh (script: "git tag -l | tail -n 1 | tail -c 2", returnStdout: true)
-                        LAST_DIGIT = sh (script: "git describe --tags | cut -d '-' -f1", returnStdout: true)
+                        LAST_DIGIT = sh (script: "git tag -l | sort -V | tail -1", returnStdout: true)
                         echo "Last digit: ${LAST_DIGIT}"
                         echo "Tag: ${TAG}"
                         if (LAST_DIGIT_CHECK.isEmpty()) {
@@ -116,7 +116,7 @@ pipeline{
                         sh '''
                         #!/bin/bash
                         
-                        sed -i "s/$LAST_TAG/$NEXT_TAG/" flask-chart/values.yaml
+                        sed -E -i.back "s/$LAST_TAG/$NEXT_TAG/" flask-chart/values.yaml
                         
                         '''
                     }
