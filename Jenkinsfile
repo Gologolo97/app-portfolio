@@ -111,12 +111,10 @@ pipeline{
                     sshagent(['githun-private-key']){
                     
                         
-                        LAST_TAG= sh (script: "grep tag: flask-chart/values.yaml | cut -d ':' -f 2", returnStdout: true)
-                        //sh (script: "sed -Ei "s/${LAST_TAG}/${NEXT_TAG}/" flask-chart/values.yaml")
                         sh '''
                         #!/bin/bash
                         
-                        sed -E -i.back "s/$LAST_TAG/$NEXT_TAG/" flask-chart/values.yaml
+                        yq '.app.tag = "$NEXT_TAG"' flask-chart/values.yaml
                         
                         '''
                     }
