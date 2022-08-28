@@ -102,6 +102,23 @@ pipeline{
             }
         }
 
+        stage ("update version in GitOps for deploying"){
+            when {
+                    expression {BRANCH_NAME ==~ /release(.+)/ }
+                }
+            steps{
+                sshagent(['githun-private-key']){
+                    sh '''
+
+                    #!/bin/bash
+                    git remote set-url origin git@github.com:Gologolo97/chart-portfolio.git
+                    git fetch --all --tags
+                    '''
+                }
+            }
+        }
+
+
     }
     post{
         always{
