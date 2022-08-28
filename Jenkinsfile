@@ -113,6 +113,7 @@ pipeline{
                         
                         sh '''
                         #!/bin/bash
+                        git commit -am"commit"
                         git checkout master
                         yq -i '.app.tag = "$NEXT_TAG"' flask-chart/values.yaml
                         git commit -am"Tag change"
