@@ -1,5 +1,6 @@
 FROM python:3.9
-ADD . /app
+COPY app.py static templates requirements.txt /app/
+
 WORKDIR /app
 RUN pip install -r requirements.txt
 #ENTRYPOINT [ "ls", "-la" ]
