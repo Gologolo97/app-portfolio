@@ -111,7 +111,9 @@ pipeline{
                     sh '''
 
                     #!/bin/bash
-                    cd flask-chart
+                    LAST_TAG=${grep tag: flask-chart/values.yaml | cut -d ":" -f 2}
+                    sed -Ei "s/${LAST_TAG}/${NEXT_TAG}/" flask-chart/values.yaml
+
                     
                     '''
                 }
