@@ -115,7 +115,9 @@ pipeline{
                         #!/bin/bash
                         git commit -am"commit"
                         git checkout master
-                        yq -i '.app.tag = "$NEXT_TAG"' flask-chart/values.yaml
+                        two_digit=$(echo "${val}" | awk '{print substr($0,3)}')
+                        yq -i ".app.tag = ${two_digit}" flask-chart/values.yaml
+                        sed -E -i.back "s/ tag: $var/ tag: 1.${var}/" flask-chart/values.yaml
                         git commit -am"Tag change"
                         git push 
                         '''
