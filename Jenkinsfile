@@ -114,8 +114,9 @@ pipeline{
                         sh '''
                         #!/bin/bash
                         
-                        yq '.app.tag = "$NEXT_TAG"' flask-chart/values.yaml
-                        
+                        yq -i '.app.tag = "$NEXT_TAG"' flask-chart/values.yaml
+                        git commit -am"Tag change"
+                        git push origin HEAD:master 
                         '''
                     }
                 }
