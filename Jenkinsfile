@@ -115,9 +115,8 @@ pipeline{
                         #!/bin/bash
                         git commit -am"commit"
                         git checkout master
-                        LAST_TAG=$(yq '.app.tag' flask-chart/values.yaml)
-                    
-                        sed -E -i.back "s/ tag: $LAST_TAG/ tag: $NEXT_TAG/" flask-chart/values.yaml
+                        
+                        yq -i '.app.tag=strenv(NEXT_TAG)' flask-chart/values.yaml
                         git add .
                         git commit -am"Tag change"
                         git push 
