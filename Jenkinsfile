@@ -110,14 +110,14 @@ pipeline{
                 script{
                     sshagent(['githun-private-key']){
                         echo "${NEXT_TAG}"
-                        
+                        val = ${NEXT_TAG}
                         sh '''
                         #!/bin/bash
                         git commit -am"commit"
                         git checkout master
                         '''
-                        sh (script: "yq -i '.app.tag=strenv(NEXT_TAG)' flask-chart/values.yaml", returnStdout: true)
-                        
+                        sh (script: "yq -i '.app.tag=strenv(val)' flask-chart/values.yaml", returnStdout: true)
+
                         sh '''
                         #!/bin/bash
                         git add .
