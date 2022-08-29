@@ -5,6 +5,7 @@ from pymongo import MongoClient
 
 app = Flask("DockerTutorial")
 
+#Hi
 #mongodb_host = os.environ.get('MONGO_HOST', 'MONGODB_URI')
 #mongodb_port = int(os.environ.get('MONGO_PORT', '27017'))
 MONGODB_URI = os.environ['MONGODB_URI']
