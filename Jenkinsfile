@@ -109,7 +109,7 @@ pipeline{
             steps{
                 script{
                     sshagent(['githun-private-key']){
-                        //val = echo "${NEXT_TAG}"
+                        val = echo "${NEXT_TAG}"
                         //val = sh (script: "echo ${NEXT_TAG}", returnStdout: true)
 
                         sh '''
@@ -120,7 +120,7 @@ pipeline{
                         LAST_TAG=$(grep "tag:" flask-chart/values.yaml | cut -d ":" -f 2)
                         
                     
-                        sed -E -i "s/ tag:$LAST_TAG/ tag:$NEXT_TAG/" flask-chart/values.yaml
+                        sed -E -i "s/ tag:$LAST_TAG/ tag:$val/" flask-chart/values.yaml
 
                         
                         git add .
