@@ -116,7 +116,7 @@ pipeline{
 
                         sh """
                         #!/bin/bash
-                        git commit -am"commit"
+                        #git commit -am"commit"
                         git checkout master
                       
                         
