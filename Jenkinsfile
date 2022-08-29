@@ -110,7 +110,7 @@ pipeline{
                 script{
                     sshagent(['githun-private-key']){
                         echo "${NEXT_TAG}"
-                        val = (script: " echo ${NEXT_TAG}", returnStdout: true)
+                        val = (script: "echo ${NEXT_TAG}", returnStdout: true)
 
                         sh '''
                         #!/bin/bash
