@@ -116,6 +116,7 @@ pipeline{
                         #!/bin/bash
                         git commit -am"commit"
                         git checkout master
+                        val=${NEXT_TAG}
                         '''
                         sh (script: "yq -i '.app.tag=strenv(val)' flask-chart/values.yaml", returnStdout: true)
 
