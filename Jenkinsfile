@@ -113,7 +113,7 @@ pipeline{
                         //val = sh (script: "echo ${NEXT_TAG}", returnStdout: true)
                         echo "val: ${val}"
 
-                        sh '''
+                        sh """
                         #!/bin/bash
                         git commit -am"commit"
                         git checkout master
@@ -127,7 +127,7 @@ pipeline{
                         git add .
                         git commit -am"Tag change"
                         git push 
-                        '''
+                        """
                     }
                 }
             }
