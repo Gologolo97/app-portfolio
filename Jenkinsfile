@@ -117,10 +117,10 @@ pipeline{
                         git commit -am"commit"
                         git checkout master
                       
-                        
+                        LAST_TAG=$(grep "tag:" flask-chart/values.yaml | cut -d ":" -f 2)
                         val=$(yq '.app.tag' flask-chart/values.yaml)
                         '''
-                        sh (script: "sed -E -i 's/ tag:$val/ tag:$NEXT_TAG/' flask-chart/values.yaml", returnStdout: true)
+                        sh (script: "sed -E -i 's/ tag:$LAST_TAG/ tag:$NEXT_TAG/' flask-chart/values.yaml", returnStdout: true)
 
                         
                         sh '''
