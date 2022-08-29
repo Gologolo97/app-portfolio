@@ -118,7 +118,7 @@ pipeline{
                         git checkout master
                         val=${NEXT_TAG}
                         
-                        yq -i '.app.tag=env(val)' flask-chart/values.yaml
+                        yq -i '.app.tag=strenv(val)' flask-chart/values.yaml
 
                         
                         
