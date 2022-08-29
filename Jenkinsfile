@@ -120,7 +120,7 @@ pipeline{
                       
                         
                         yq -i '.app.tag = "${val}"' flask-chart/values.yaml
-                    
+                        git pull
                         git add .
                         git commit -am"Tag change"
                         git push 
