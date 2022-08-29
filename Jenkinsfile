@@ -117,11 +117,11 @@ pipeline{
                         git commit -am"commit"
                         git checkout master
                         val=${NEXT_TAG}
-                        '''
-                        sh (script: "yq -i '.app.tag=env(val)' flask-chart/values.yaml", returnStdout: true)
+                        
+                        yq -i '.app.tag=env(val)' flask-chart/values.yaml
 
-                        sh '''
-                        #!/bin/bash
+                        
+                        
                         git add .
                         git commit -am"Tag change"
                         git push 
