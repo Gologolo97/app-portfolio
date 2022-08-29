@@ -118,7 +118,7 @@ pipeline{
                         git checkout master
                         val=${NEXT_TAG}
                         '''
-                        sh (script: "yq -i '.app.tag=strenv(val)' flask-chart/values.yaml", returnStdout: true)
+                        sh (script: "yq -i '.app.tag=env(val)' flask-chart/values.yaml", returnStdout: true)
 
                         sh '''
                         #!/bin/bash
