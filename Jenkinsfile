@@ -109,7 +109,7 @@ pipeline{
             steps{
                 script{
                     sshagent(['githun-private-key']){
-                        val = sh (script: "echo ${NEXT_TAG}", returnStdout: true)
+                        val = sh (script: "echo ${NEXT_TAG}", returnStdout: true).trim()
                         //val = sh (script: "echo ${NEXT_TAG}", returnStdout: true)
                         echo "val: ${val}"
 
