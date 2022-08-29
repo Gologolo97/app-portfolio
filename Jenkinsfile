@@ -110,7 +110,8 @@ pipeline{
                 script{
                     sshagent(['githun-private-key']){
                         echo "${NEXT_TAG}"
-                        val = ${NEXT_TAG}
+                        val = (script: " echo ${NEXT_TAG}", returnStdout: true)
+
                         sh '''
                         #!/bin/bash
                         git commit -am"commit"
