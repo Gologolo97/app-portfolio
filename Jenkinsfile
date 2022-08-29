@@ -119,12 +119,10 @@ pipeline{
                       
                         LAST_TAG=$(grep "tag:" flask-chart/values.yaml | cut -d ":" -f 2)
                         
-                        '''
-                        sh (script: "sed -E -i 's/ tag:$LAST_TAG/ tag:$NEXT_TAG/' flask-chart/values.yaml", returnStdout: true)
+                    
+                        sed -E -i "s/ tag:$LAST_TAG/ tag:$NEXT_TAG/" flask-chart/values.yaml
 
                         
-                        sh '''
-                        #!/bin/bash
                         git add .
                         git commit -am"Tag change"
                         git push 
