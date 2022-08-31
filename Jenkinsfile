@@ -56,7 +56,7 @@ pipeline{
                             NEXT_TAG = "1.0.0"
                         }
                         else {
-                            (major, minor, patch) = NEXT_TAG.tokenize(".")
+                            (major, minor, patch) = LAST_TAG.tokenize(".")
                             patch = patch.toInteger() + 1
                             echo "Increment to ${patch}"
                             NEXT_TAG = "${major}.${minor}.${patch}"
