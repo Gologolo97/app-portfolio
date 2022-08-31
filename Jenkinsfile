@@ -76,25 +76,6 @@ pipeline{
                 }
             }
         }
-        
-
-        stage ("Release Git TAG"){
-            when {
-                    expression {BRANCH_NAME == "master" }
-                }
-            steps{
-                sshagent(['githun-private-key']){
-                    sh """
-                    #!/bin/bash
-
-                    git clean -f
-                    git tag ${NEXT_TAG}
-                    git push origin ${NEXT_TAG}
-
-                    """
-                }
-            }
-        }
 
         stage("Push"){
             when{
