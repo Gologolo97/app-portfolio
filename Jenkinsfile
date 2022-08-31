@@ -31,7 +31,7 @@ pipeline{
                 sh """
                 #!/bin/bash
 
-                docker-compose up -d --build
+                docker-compose up --build -d
                 chmod +x test.sh
                 ./test.sh web:5000
                 """
