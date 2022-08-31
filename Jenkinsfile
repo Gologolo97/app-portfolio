@@ -10,50 +10,15 @@ pipeline{
     }
     environment{
         
-        BRANCH_NAME = "${env.GIT_BRANCH}"
-        
+        BRANCH_NAME = "${env.GIT_BRANCH}"    
     }
 
     stages{
-        stage("build for release"){
-            when {
-                    expression {BRANCH_NAME ==~ /release(.+)/ }
-                }
-            steps{
-                script{
-                
-                sshagent(['githun-private-key']){
-                    sh "git fetch --all --tags"
-                    TAG = BRANCH_NAME.split('\\/')
-                        VERSION = TAG[1]
-                        LAST_DIGIT_CHECK = sh (script: "git tag -l | tail -n 1 | tail -c 2", returnStdout: true)
-                        LAST_DIGIT = sh (script: "git tag -l | sort -V | tail -1", returnStdout: true)
-                        echo "Last digit: ${LAST_DIGIT}"
-                        echo "Tag: ${TAG}"
-                        if (LAST_DIGIT_CHECK.isEmpty()) {
-                            NEXT_TAG = "${VERSION}.0"
-                            echo "tag is ${NEXT_TAG}"
-                        }
-                        else {
-                            (major, minor, patch) = LAST_DIGIT.tokenize(".")
-                            patch = patch.toInteger() + 1
-                            echo "Increment to ${patch}"
-                            NEXT_TAG = "${major}.${minor}.${patch}"
-                            echo "the next tag for Release is: ${NEXT_TAG}"
-                        }
-                }
-                //sh "docker build -t app:${NEXT_TAG} ."  
-                image = docker.build("golo-portfolio:${NEXT_TAG}")
-              }  
-            }
-        }
-
+        
         stage("Build")
-        {
-            
+        {            
             steps{
                 script{
-                    //sh "docker build -t app:SNAPSHOT ."
                     image = docker.build("golo-portfolio")
                 }
             }
@@ -62,25 +27,56 @@ pipeline{
         stage("E2E Test"){
             steps{
                 script{
-                sh "docker-compose up -d" 
-                sh "chmod +x test.sh"
-                sh "./test.sh web:5000"
-                
+
+                sh """
+                #!/bin/bash
+
+                docker-compose up -d
+                chmod +x test.sh
+                ./test.sh web:5000
+                """
             }
         }
 
         }
-        stage ("Calc Tag") {
+        stage ("Calc and Release Tag") {
+            when {
+                    expression {BRANCH_NAME == "master" }
+                }
             steps{
                 script{
                     sshagent(['githun-private-key']){
-                         sh "git fetch --all --tags"
-                         LAST_TAG = sh (script: "git tag -l | sort -V | tail -1", returnStdout: true)
 
+                        echo "========= Calc Tag ========="
+
+                        //sh "git fetch --all --tags"
+                        LAST_TAG = sh (script: "git tag -l | sort -V | tail -1", returnStdout: true)
+                        if (LAST_TAG.isEmpty() ) {
+                            NEXT_TAG = "1.0.0"
+                        }
+                        else {
+                            (major, minor, patch) = NEXT_TAG.tokenize(".")
+                            patch = patch.toInteger() + 1
+                            echo "Increment to ${patch}"
+                            NEXT_TAG = "${major}.${minor}.${patch}"
+                            echo "the next tag for Release is: ${NEXT_TAG}"
+                        }
+
+                        echo "========= Release Tag ========="
+
+                        sh """
+                        #!/bin/bash
+
+                        git clean -f
+                        git tag ${NEXT_TAG}
+                        git push origin ${NEXT_TAG}
+
+                        """
                     }
                 }
             }
         }
+        
 
         stage ("Release Git TAG"){
             when {
@@ -88,16 +84,21 @@ pipeline{
                 }
             steps{
                 sshagent(['githun-private-key']){
-                    sh "git clean -f"
-                    sh "git tag ${NEXT_TAG}"
-                    sh "git push origin ${NEXT_TAG}"
+                    sh """
+                    #!/bin/bash
+
+                    git clean -f
+                    git tag ${NEXT_TAG}
+                    git push origin ${NEXT_TAG}
+
+                    """
                 }
             }
         }
 
         stage("Push"){
             when{
-                expression {BRANCH_NAME ==~ /release(.+)/  }
+                expression {BRANCH_NAME == "master"  }
             }
             steps{
                 script{
