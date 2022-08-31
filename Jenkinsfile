@@ -50,7 +50,7 @@ pipeline{
 
                         echo "========= Calc Tag ========="
 
-                        //sh "git fetch --all --tags"
+                        sh "git fetch --all --tags"
                         LAST_TAG = sh (script: "git tag -l | sort -V | tail -1", returnStdout: true)
                         if (LAST_TAG.isEmpty() ) {
                             NEXT_TAG = "1.0.0"
