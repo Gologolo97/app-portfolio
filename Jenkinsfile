@@ -48,36 +48,54 @@ pipeline{
             }
         }
 
-        stage("build not for release")
+        stage("Build")
         {
-            when{
-                expression {BRANCH_NAME == 'master' || BRANCH_NAME ==~ /feature(.+)/ }
-            }
+            
             steps{
                 script{
                     //sh "docker build -t app:SNAPSHOT ."
-                    image = docker.build("golo-portfolio:SNAPSHOT")
-                    NEXT_TAG=""
+                    image = docker.build("golo-portfolio")
                 }
             }
         }
 
-        stage("e2e"){
+        stage("E2E Test"){
             steps{
                 script{
-                if (NEXT_TAG.isEmpty()){
-                sh "VERSION=SNAPSHOT docker-compose up -d"
-                }
-                else{
-                sh "VERSION=${NEXT_TAG} docker-compose up -d"
-                }
+                sh "docker-compose up -d" 
                 sh "chmod +x test.sh"
                 sh "./test.sh web:5000"
+                
+            }
+        }
+
+        }
+        stage ("Calc Tag") {
+            steps{
+                script{
+                    sshagent(['githun-private-key']){
+                         sh "git fetch --all --tags"
+                         LAST_TAG = sh (script: "git tag -l | sort -V | tail -1", returnStdout: true)
+
+                    }
                 }
             }
         }
 
-        stage("push"){
+        stage ("Release Git TAG"){
+            when {
+                    expression {BRANCH_NAME == "master" }
+                }
+            steps{
+                sshagent(['githun-private-key']){
+                    sh "git clean -f"
+                    sh "git tag ${NEXT_TAG}"
+                    sh "git push origin ${NEXT_TAG}"
+                }
+            }
+        }
+
+        stage("Push"){
             when{
                 expression {BRANCH_NAME ==~ /release(.+)/  }
             }
@@ -89,31 +107,15 @@ pipeline{
             }
         }
 
-        stage ("release TAG"){
+        stage ("Deploy"){
             when {
-                    expression {BRANCH_NAME ==~ /release(.+)/ }
-                }
-            steps{
-                sshagent(['githun-private-key']){
-                    sh "git clean -f"
-                    sh "git tag ${NEXT_TAG}"
-                    sh "git push origin ${NEXT_TAG}"
-                }
-            }
-        }
-
-        stage ("update version in GitOps for deploying"){
-            when {
-                    expression {BRANCH_NAME ==~ /release(.+)/ }
+                    expression {BRANCH_NAME == "master" }
                 }
             steps{
                 script{
                     sshagent(['githun-private-key']){
                         val = sh(script: "echo ${NEXT_TAG}", returnStdout: true).trim()
-                        //val = sh (script: "echo ${NEXT_TAG}", returnStdout: true)
-                        // echo 
-                        echo "val: ${val}"
-
+                       
                         sh """
                         #!/bin/bash
                         #git commit -am"commit"

@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    image: golo-portfolio:${VERSION}
+    image: golo-portfolio
     environment:
       - MONGODB_URI=mongodb://mongo:27017/
     #build: . 
