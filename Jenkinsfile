@@ -40,7 +40,7 @@ pipeline{
         }
 
         }
-        stage ("Calc and Release Tag") {
+        stage ("Calc TAG") {
             when {
                     expression {BRANCH_NAME == "master" }
                 }
@@ -50,7 +50,6 @@ pipeline{
 
                         echo "========= Calc Tag ========="
 
-                        sh "git fetch --all --tags"
                         LAST_TAG = sh (script: "git tag -l | sort -V | tail -1", returnStdout: true)
                         if (LAST_TAG.isEmpty() ) {
                             NEXT_TAG = "1.0.0"
@@ -61,8 +60,21 @@ pipeline{
                             echo "Increment to ${patch}"
                             NEXT_TAG = "${major}.${minor}.${patch}"
                             echo "the next tag for Release is: ${NEXT_TAG}"
-                        }
+                        }   
+                    }
+                }
+            }
+        }
 
+        stage ("Git TAG")
+        {
+            when{
+                expression {BRANCH_NAME == "master"  }
+            }
+            steps{
+                script{
+                    sshagent(['githun-private-key']){
+                        
                         echo "========= Release Tag ========="
 
                         sh """
